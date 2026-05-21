@@ -47,4 +47,34 @@ title = "Simple cheese burger"
 id = "LAf8yVkvT26NY6-EnZQlA"
 uri = "file://artifacts/noname/src/assets/images/atmosphere.png"
 type = "image"
-title = "Dark alley restaurant exterior"
+title = "Gritty Muay Thai gym"
+
+[[generated]]
+id = "Pl3lkdJSsO_oHPuAZnnaZ"
+uri = "file://artifacts/noname/src/assets/images/hero-bg.png"
+type = "image"
+title = "Fighter in a dark ring"
+
+[[generated]]
+id = "ZLOA_2_j-fWvxnWVBY4mW"
+uri = "file://artifacts/noname/src/assets/images/training-1.png"
+type = "image"
+title = "Taping hands close-up"
+
+[[generated]]
+id = "HUIQHNxW0GvF2XZay0VpJ"
+uri = "file://artifacts/noname/src/assets/images/training-2.png"
+type = "image"
+title = "Fighters sparring intensely"
+
+[[generated]]
+id = "W5Am3KK1f8ZYt44v5IIFJ"
+uri = "file://artifacts/noname/src/assets/images/instructor-1.png"
+type = "image"
+title = "Male Muay Thai instructor"
+
+[[generated]]
+id = "AM7bs2vHd0Fpg9X_RmURh"
+uri = "file://artifacts/noname/src/assets/images/instructor-2.png"
+type = "image"
+title = "Female Muay Thai instructor"

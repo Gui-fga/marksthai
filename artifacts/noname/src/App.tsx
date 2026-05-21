@@ -1,313 +1,161 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { MapPin, Clock, Instagram, Gift, Trophy, Flame } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { MapPin, Clock, Instagram, Sword, Dumbbell, Shield, Phone, ChevronRight } from "lucide-react";
 
+import heroBg from "./assets/images/hero-bg.png";
 import atmosphereImg from "./assets/images/atmosphere.png";
-import burger1 from "./assets/images/burger-1.png";
-import burger2 from "./assets/images/burger-2.png";
-import burger3 from "./assets/images/burger-3.png";
-import burger4 from "./assets/images/burger-4.png";
-import burger5 from "./assets/images/burger-5.png";
-import burger6 from "./assets/images/burger-6.png";
-
-const LAUNCH_DATE = new Date("2026-07-01T00:00:00");
-
-function useCountdown(target: Date) {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  useEffect(() => {
-    function calc() {
-      const diff = target.getTime() - Date.now();
-      if (diff <= 0) { setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 }); return; }
-      setTimeLeft({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / (1000 * 60)) % 60),
-        seconds: Math.floor((diff / 1000) % 60),
-      });
-    }
-    calc();
-    const id = setInterval(calc, 1000);
-    return () => clearInterval(id);
-  }, [target]);
-  return timeLeft;
-}
-
-const LAYERS = [
-  { label: "Pão de Brioche",   bg: "linear-gradient(180deg,#D4861E,#A5601A)", w: 380, h: 85,  br: "50% 50% 14% 14%/62% 62% 18% 18%", aY: -148, sY: -520, sX: -70, z: 10, seeds: true },
-  { label: "Alface Americana", bg: "linear-gradient(180deg,#3DA83D,#276827)", w: 415, h: 28,  br: "45% 55% 50% 50%/55% 55% 45% 45%", aY:  -80,  sY: -360, sX:  90, z: 9  },
-  { label: "Tomate",           bg: "linear-gradient(180deg,#C93A2C,#8E251A)", w: 355, h: 22,  br: "6px",                               aY:  -53,  sY: -200, sX: -80, z: 8  },
-  { label: "Queijo Cheddar",   bg: "linear-gradient(180deg,#F5B220,#D4920A)", w: 402, h: 18,  br: "3px",                               aY:  -30,  sY:  200, sX:  80, z: 7  },
-  { label: "Blend Angus 180g", bg: "linear-gradient(180deg,#3E1A0D,#200D06)", w: 365, h: 54,  br: "8px",                               aY:    6,  sY:  360, sX: -60, z: 6  },
-  { label: "Pão Inferior",     bg: "linear-gradient(180deg,#B5641A,#804512)", w: 380, h: 36,  br: "14% 14% 50% 50%/18% 18% 62% 62%", aY:   73,  sY:  520, sX:  50, z: 5  },
-];
-
-function HeroWithBurger() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"],
-  });
-  const smooth = useSpring(scrollYProgress, { stiffness: 42, damping: 18 });
-
-  const heroTextOpacity = useTransform(smooth, [0, 0.18], [1, 0]);
-  const heroTextY       = useTransform(smooth, [0, 0.25], [0, -60]);
-  const doneOpacity     = useTransform(smooth, [0.72, 0.84], [0, 1]);
-  const doneScale       = useTransform(smooth, [0.72, 0.84], [0.85, 1]);
-  const labelOpacity    = useTransform(smooth, [0.12, 0.45], [1, 0]);
-  const overlayOpacity  = useTransform(smooth, [0, 0.2, 0.85, 1], [0.45, 0.7, 0.75, 0.92]);
-  const sectionFade     = useTransform(smooth, [0.88, 1], [1, 0]);
-
-  const layerMotions = LAYERS.map((l) => ({
-    y: useTransform(smooth, [0.08, 0.78], [l.sY, l.aY]),
-    x: useTransform(smooth, [0.08, 0.78], [l.sX, 0]),
-  }));
-
-  return (
-    <motion.section
-      ref={sectionRef}
-      style={{ opacity: sectionFade }}
-      className="relative h-[260vh] w-full"
-    >
-      {/* Sticky viewport */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-
-        {/* Dark background */}
-        <motion.div
-          style={{ opacity: overlayOpacity }}
-          className="absolute inset-0 bg-black z-10 pointer-events-none"
-        />
-
-        {/* Burger layers — the background animation */}
-        <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
-          {LAYERS.map((layer, i) => (
-            <motion.div
-              key={i}
-              style={{
-                y: layerMotions[i].y,
-                x: layerMotions[i].x,
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                marginLeft: -(layer.w / 2),
-                marginTop: -(layer.h / 2),
-                width: layer.w,
-                height: layer.h,
-                background: layer.bg,
-                borderRadius: layer.br,
-                zIndex: layer.z,
-                boxShadow: "0 6px 32px rgba(0,0,0,0.8), 0 2px 8px rgba(0,0,0,0.6)",
-              }}
-            >
-              {layer.seeds && (
-                <div className="absolute inset-0 flex items-center justify-center gap-4 pt-3">
-                  {[0,1,2,3,4].map(s => (
-                    <div key={s} className="w-2.5 h-1.5 bg-white/75 rounded-full" style={{ transform: `rotate(${s * 15 - 30}deg)` }} />
-                  ))}
-                </div>
-              )}
-              <motion.span
-                style={{ opacity: labelOpacity }}
-                className="absolute -right-3 top-1/2 -translate-y-1/2 translate-x-full font-mono text-[11px] uppercase tracking-[0.2em] text-primary whitespace-nowrap pl-4 hidden md:block"
-              >
-                — {layer.label}
-              </motion.span>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Hero text — fades as you scroll */}
-        <motion.div
-          style={{ opacity: heroTextOpacity, y: heroTextY }}
-          className="absolute inset-0 z-30 flex flex-col items-center justify-center text-center px-4"
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7 }}
-            className="font-mono text-primary text-sm uppercase tracking-[0.3em] mb-2"
-          >
-            🍔🔥
-          </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-[18vw] md:text-[14vw] leading-none font-bold uppercase tracking-tighter text-white"
-          >
-            NONAME03
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="mt-4 font-mono text-primary uppercase tracking-widest text-sm md:text-lg bg-black/70 px-5 py-2"
-          >
-            Sem nome, sem padrão. Só sabor.
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.9 }}
-            className="mt-3 font-mono text-white/60 text-xs md:text-sm uppercase tracking-widest"
-          >
-            Feito pra quem não tem frescura.
-          </motion.p>
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="mt-12 font-mono text-xs uppercase tracking-widest text-white/30"
-          >
-            Role para baixo
-          </motion.div>
-        </motion.div>
-
-        {/* Assembled message */}
-        <motion.div
-          style={{ opacity: doneOpacity, scale: doneScale }}
-          className="absolute bottom-16 left-0 right-0 z-30 text-center pointer-events-none"
-        >
-          <p className="font-bold text-3xl md:text-5xl uppercase tracking-tighter text-primary">
-            🔥 Feito. Sem frescura.
-          </p>
-          <p className="font-mono text-white/50 text-sm mt-3 uppercase tracking-widest">
-            Continue rolando
-          </p>
-        </motion.div>
-      </div>
-    </motion.section>
-  );
-}
-
-const menuItems = [
-  { id: 1, name: "01", desc: "Pão, carne, queijo. Sem frescura.", price: "28", image: burger1 },
-  { id: 2, name: "02", desc: "Duplo. Muito bacon, cebola caramelizada.", price: "36", image: burger2 },
-  { id: 3, name: "03", desc: "Apimentado. Jalapeños e molho vermelho da casa.", price: "34", image: burger3 },
-  { id: 4, name: "04", desc: "Cogumelos tostados, queijo branco derretido.", price: "38", image: burger4 },
-  { id: 5, name: "05", desc: "O monstro. Anéis de cebola, triplo hambúrguer, o caos.", price: "48", image: burger5 },
-  { id: 6, name: "06", desc: "Simples. Apenas para os fortes.", price: "24", image: burger6 },
-];
+import training1 from "./assets/images/training-1.png";
+import training2 from "./assets/images/training-2.png";
+import instructor1 from "./assets/images/instructor-1.png";
+import instructor2 from "./assets/images/instructor-2.png";
 
 export default function App() {
-  const { days, hours, minutes, seconds } = useCountdown(LAUNCH_DATE);
+  const { scrollYProgress } = useScroll();
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 0.2], [0, 100]);
+
+  const [isNavScrolled, setIsNavScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsNavScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <div className="bg-background text-foreground selection:bg-primary selection:text-black">
-
-      {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 p-5 mix-blend-difference">
-        <div className="flex justify-between items-center max-w-7xl mx-auto">
-          <span className="font-mono text-xl font-bold tracking-tighter uppercase text-white">
-            NONAME03
-          </span>
-          <div className="hidden md:flex gap-8 font-mono text-sm uppercase tracking-widest text-white">
-            <a href="#menu" className="hover:text-primary transition-colors">Menu</a>
-            <a href="#raspadinha" className="hover:text-primary transition-colors">Raspadinha</a>
-            <a href="#local" className="hover:text-primary transition-colors">Local</a>
+    <div className="bg-background text-foreground selection:bg-primary selection:text-white min-h-screen overflow-x-hidden">
+      
+      {/* Navigation */}
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isNavScrolled ? 'bg-black/90 backdrop-blur-sm py-4' : 'bg-transparent py-6'}`}>
+        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+          <div className="text-3xl font-black uppercase tracking-tighter text-white">
+            MARKS<span className="text-primary">THAI</span>
           </div>
+          <div className="hidden md:flex gap-8 font-mono text-sm uppercase tracking-widest font-bold">
+            <a href="#filosofia" className="hover:text-primary transition-colors">Filosofia</a>
+            <a href="#modalidades" className="hover:text-primary transition-colors">Modalidades</a>
+            <a href="#mestres" className="hover:text-primary transition-colors">Mestres</a>
+            <a href="#planos" className="hover:text-primary transition-colors">Planos</a>
+          </div>
+          <a 
+            href="https://wa.me/5511999999999" 
+            target="_blank" 
+            rel="noreferrer"
+            className="hidden md:flex items-center gap-2 bg-primary text-white px-6 py-2 uppercase font-bold text-sm tracking-wider hover:bg-white hover:text-black transition-colors"
+          >
+            Agendar Aula
+          </a>
         </div>
       </nav>
 
-      {/* Hero with burger assembly background */}
-      <HeroWithBurger />
-
-      {/* Countdown / Inauguração */}
-      <section className="bg-primary py-16 px-6">
-        <div className="max-w-4xl mx-auto text-center">
+      {/* Hero Section */}
+      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+        <motion.div 
+          className="absolute inset-0 z-0"
+          style={{ y: heroY, opacity: heroOpacity }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black z-10" />
+          <img src={heroBg} alt="Muay Thai Fighter" className="w-full h-full object-cover grayscale mix-blend-luminosity opacity-60" />
+        </motion.div>
+        
+        <div className="relative z-20 text-center px-4 mt-20">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <h1 className="text-[15vw] leading-[0.8] font-black uppercase tracking-tighter text-white drop-shadow-2xl">
+              MARKS<span className="text-primary">THAI</span>
+            </h1>
+          </motion.div>
+          
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="mt-6 space-y-4"
           >
-            <p className="font-mono text-black text-sm uppercase tracking-[0.3em] mb-3">
-              🎉 Data oficial de inauguração
+            <p className="font-mono text-xl md:text-3xl uppercase tracking-[0.2em] text-white/80 font-bold">
+              Disciplina. Dor. Glória.
             </p>
-            <h2 className="font-bold text-5xl md:text-7xl uppercase tracking-tighter text-black mb-8">
-              01 / 07 / 26 🤩
-            </h2>
-            <div className="flex justify-center gap-4 md:gap-8">
-              {[
-                { label: "Dias", value: days },
-                { label: "Horas", value: hours },
-                { label: "Min", value: minutes },
-                { label: "Seg", value: seconds },
-              ].map(({ label, value }) => (
-                <div key={label} className="bg-black text-primary px-5 md:px-8 py-4 min-w-[70px]">
-                  <div className="font-bold text-3xl md:text-5xl font-mono tabular-nums">
-                    {String(value).padStart(2, "0")}
-                  </div>
-                  <div className="font-mono text-xs uppercase tracking-widest text-white/60 mt-1">
-                    {label}
-                  </div>
-                </div>
-              ))}
+            <div className="pt-8">
+              <a 
+                href="#contato"
+                className="inline-flex items-center gap-3 bg-primary text-white px-10 py-5 text-xl font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all group"
+              >
+                Sangre no Treino
+                <ChevronRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+              </a>
             </div>
           </motion.div>
+        </div>
+
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+          <div className="w-[2px] h-16 bg-gradient-to-b from-primary to-transparent" />
         </div>
       </section>
 
       {/* Manifesto */}
-      <section id="sobre" className="py-32 px-6 bg-black">
+      <section id="filosofia" className="py-32 px-6 bg-black relative">
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl md:text-7xl font-bold uppercase tracking-tighter mb-12 text-primary">
-            Sem nome.<br />Sem padrão.
-          </h2>
-          <div className="space-y-8 font-mono text-lg md:text-2xl text-muted-foreground leading-relaxed">
-            <p>
-              Não precisamos de mascote sorridente ou de paleta de cores testada em grupos focais.
-              O que fazemos aqui é sujo, quente e real.
-            </p>
-            <p>
-              NONAME03 não é só um hambúrguer. É atitude. É pra quem sabe o que quer e vai direto ao ponto.
-            </p>
-            <p className="text-white text-2xl md:text-4xl font-bold uppercase tracking-tighter">
-              🏆 Feito pra quem não tem frescura.
-            </p>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-primary font-mono uppercase tracking-[0.3em] font-bold mb-6">/ A Filosofia</h2>
+            <div className="text-4xl md:text-6xl font-bold uppercase tracking-tighter leading-[1.1] space-y-8 text-white">
+              <p>
+                O VERDADEIRO MUAY THAI. SEM ATALHOS.
+              </p>
+              <p className="text-white/50">
+                O ringue não mente. Aqui você não vem para malhar, vem para forjar seu corpo e sua mente.
+              </p>
+              <p>
+                O SUOR É O PAGAMENTO. <span className="text-primary">O RESPEITO É A RECOMPENSA.</span>
+              </p>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Menu */}
-      <section id="menu" className="py-32 px-6 bg-zinc-950">
+      {/* Modalities */}
+      <section id="modalidades" className="py-32 px-6 bg-zinc-950 border-t border-zinc-900">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-            <h2 className="text-6xl md:text-9xl font-bold uppercase tracking-tighter text-white">
-              🍔 Menu
+          <div className="mb-20">
+            <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white">
+              Treina<span className="text-primary">mento</span>
             </h2>
-            <p className="font-mono text-muted-foreground max-w-sm pb-4">
-              Não alteramos os lanches. Não tiramos a cebola. Se não gosta, come em outro lugar.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {menuItems.map((item, i) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[
+              { title: "Muay Thai Tradicional", desc: "Raízes tailandesas. Cotovelos, joelhos, clinch. A arte das oito armas em sua forma mais pura.", icon: <Sword className="w-8 h-8" />, schedule: "Seg, Qua, Sex - 19h" },
+              { title: "Muay Thai Funcional", desc: "Condicionamento físico extremo baseado em movimentos de combate. Queime, construa, resista.", icon: <Dumbbell className="w-8 h-8" />, schedule: "Ter, Qui - 07h, 18h" },
+              { title: "Kids Muay Thai", desc: "Disciplina, respeito e defesa pessoal para os pequenos. Construindo o caráter no tatame.", icon: <Shield className="w-8 h-8" />, schedule: "Seg, Qua - 16h" },
+              { title: "Luta Livre / Grappling", desc: "Combate corpo-a-corpo sem kimono. Quedas, pressões e finalizações para domínio total.", icon: <Flame className="w-8 h-8" />, schedule: "Ter, Qui - 20h" },
+            ].map((mod, i) => (
               <motion.div
-                key={item.id}
+                key={i}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
+                viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group cursor-pointer"
-                data-testid={`card-burger-${item.id}`}
+                className="bg-black border border-zinc-900 p-10 group hover:border-primary transition-colors relative overflow-hidden"
               >
-                <div className="aspect-square bg-zinc-900 mb-6 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10 mix-blend-overlay" />
-                  <img
-                    src={item.image}
-                    alt={`Burger ${item.name}`}
-                    className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700"
-                  />
-                  <div className="absolute top-4 left-4 z-20 bg-black text-primary font-mono px-3 py-1 text-sm font-bold">
-                    #{item.name}
+                <div className="absolute inset-0 bg-primary/5 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+                <div className="relative z-10">
+                  <div className="text-primary mb-6">{mod.icon}</div>
+                  <h3 className="text-3xl font-bold uppercase tracking-tighter mb-4 text-white">{mod.title}</h3>
+                  <p className="font-mono text-zinc-400 text-sm leading-relaxed mb-8">{mod.desc}</p>
+                  <div className="inline-flex items-center gap-2 bg-zinc-900 px-4 py-2 font-mono text-xs text-zinc-300 uppercase font-bold">
+                    <Clock className="w-4 h-4 text-primary" />
+                    {mod.schedule}
                   </div>
-                </div>
-                <div className="flex justify-between items-start gap-4">
-                  <p className="font-sans text-xl text-white font-medium leading-tight">
-                    {item.desc}
-                  </p>
-                  <span className="font-mono text-2xl font-bold text-primary shrink-0">
-                    R${item.price}
-                  </span>
                 </div>
               </motion.div>
             ))}
@@ -315,113 +163,185 @@ export default function App() {
         </div>
       </section>
 
-      {/* Raspadinhas Premiadas */}
-      <section id="raspadinha" className="py-32 px-6 bg-black">
-        <div className="max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <div className="text-6xl mb-6">🎁</div>
-            <h2 className="text-5xl md:text-8xl font-bold uppercase tracking-tighter text-white mb-6">
-              Raspadinhas<br />
-              <span className="text-primary">Premiadas</span>
-            </h2>
-            <p className="font-mono text-muted-foreground text-lg md:text-xl max-w-xl mx-auto mb-16">
-              Cada pedido vem com uma raspadinha. Pode ser nada. Pode ser o lanche de graça. Pode ser muito mais.
+      {/* Instructors & Gallery */}
+      <section id="mestres" className="py-32 bg-black border-t border-zinc-900">
+        <div className="max-w-7xl mx-auto px-6 mb-20">
+           <h2 className="text-primary font-mono uppercase tracking-[0.3em] font-bold mb-4">/ Quem Comanda</h2>
+           <h3 className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white">Os Mestres</h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          {/* Instructor 1 */}
+          <div className="group relative overflow-hidden aspect-[4/5] md:aspect-auto">
+            <img src={instructor1} alt="Mestre Trovão" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-8 md:p-12">
+              <h4 className="text-5xl font-black uppercase tracking-tighter text-white mb-2">Mestre Marcos "Trovão"</h4>
+              <p className="text-primary font-mono uppercase font-bold text-lg mb-4">30 Lutas / 25 Vitórias</p>
+              <p className="font-mono text-zinc-300 text-sm max-w-sm">Especialista em clinch e cotoveladas. Forjado nos ringues de Bangkok, traz a brutalidade da Tailândia para São Paulo.</p>
+            </div>
+          </div>
+          {/* Instructor 2 */}
+          <div className="group relative overflow-hidden aspect-[4/5] md:aspect-auto">
+            <img src={instructor2} alt="Kru Fúria" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-8 md:p-12">
+              <h4 className="text-5xl font-black uppercase tracking-tighter text-white mb-2">Kru Aline "Fúria"</h4>
+              <p className="text-primary font-mono uppercase font-bold text-lg mb-4">Campeã Estadual 2022</p>
+              <p className="font-mono text-zinc-300 text-sm max-w-sm">Velocidade, precisão e técnica impecável. Responsável pelo treinamento avançado de striking e condicionamento de atletas.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Gallery Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 mt-2 border-t-2 border-black">
+          <div className="aspect-square relative overflow-hidden group">
+            <img src={training1} alt="Training" className="w-full h-full object-cover grayscale opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+          </div>
+          <div className="aspect-square relative overflow-hidden group">
+            <img src={atmosphereImg} alt="Atmosphere" className="w-full h-full object-cover grayscale opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+          </div>
+          <div className="aspect-square relative overflow-hidden group">
+            <img src={training2} alt="Sparring" className="w-full h-full object-cover grayscale opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+          </div>
+          <div className="aspect-square relative overflow-hidden group bg-primary flex items-center justify-center p-8 text-center">
+            <p className="text-black font-black text-3xl md:text-5xl uppercase tracking-tighter leading-none">
+              Respeito<br/>No<br/>Tatame
             </p>
-          </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="planos" className="py-32 px-6 bg-zinc-950 border-t border-zinc-900">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white mb-6">O Preço do Suor</h2>
+            <p className="font-mono text-zinc-400 uppercase tracking-widest text-sm">Sem taxas surpresas. Sem contratos amarrados.</p>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { icon: <Flame className="w-8 h-8" />, title: "Lanche Grátis", desc: "Raspe e ganhe o seu próximo lanche sem pagar nada. Zero frescura." },
-              { icon: <Trophy className="w-8 h-8" />, title: "Combo Premiado", desc: "Lanche + bebida + batata. O pacote completo pra quem tem sorte grande." },
-              { icon: <Gift className="w-8 h-8" />, title: "Surpresa NONAME03", desc: "Prêmio surpresa. Só abrindo pra saber. Não pergunta — raspa." },
-            ].map((card, i) => (
+              { name: "Básico", price: "149", desc: "2x por semana", features: ["Acesso às aulas de Muay Thai", "Uso de equipamentos", "Acesso ao vestiário"] },
+              { name: "Avançado", price: "199", desc: "Acesso Livre", features: ["Acesso ilimitado às aulas", "Muay Thai + Luta Livre", "Acompanhamento físico", "Horário livre"], featured: true },
+              { name: "Elite", price: "349", desc: "Livre + Particular", features: ["Tudo do plano Avançado", "1 Aula particular por semana", "Plano de evolução", "Armário exclusivo"] },
+            ].map((tier, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.15 }}
-                className="border border-zinc-800 p-8 hover:border-primary transition-colors duration-300 group"
-                data-testid={`card-raspadinha-${i}`}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className={`border p-10 flex flex-col ${tier.featured ? 'border-primary bg-primary/5 relative' : 'border-zinc-800 bg-black hover:border-zinc-600'} transition-colors`}
               >
-                <div className="text-primary mb-4 group-hover:scale-110 transition-transform duration-300">
-                  {card.icon}
+                {tier.featured && (
+                  <div className="absolute top-0 right-0 bg-primary text-white font-mono text-xs uppercase font-bold px-3 py-1">
+                    Mais Escolhido
+                  </div>
+                )}
+                <h3 className="text-4xl font-black uppercase tracking-tighter text-white mb-2">{tier.name}</h3>
+                <p className="font-mono text-primary font-bold uppercase mb-6">{tier.desc}</p>
+                <div className="mb-8 flex items-end gap-1">
+                  <span className="text-2xl font-mono text-white/50">R$</span>
+                  <span className="text-6xl font-black tracking-tighter text-white leading-none">{tier.price}</span>
+                  <span className="text-sm font-mono text-white/50">/mês</span>
                 </div>
-                <h3 className="font-bold text-2xl uppercase tracking-tighter text-white mb-3">{card.title}</h3>
-                <p className="font-mono text-muted-foreground text-sm leading-relaxed">{card.desc}</p>
+                <ul className="space-y-4 font-mono text-sm text-zinc-400 flex-1">
+                  {tier.features.map((f, j) => (
+                    <li key={j} className="flex items-start gap-3">
+                      <ChevronRight className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <button className={`mt-10 w-full py-4 uppercase font-bold tracking-widest text-sm transition-colors ${tier.featured ? 'bg-primary text-white hover:bg-white hover:text-black' : 'bg-zinc-900 text-white hover:bg-zinc-800'}`}>
+                  Assinar Agora
+                </button>
               </motion.div>
             ))}
           </div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-16 bg-primary p-8 text-center"
-          >
-            <p className="font-mono text-black font-bold text-lg uppercase tracking-widest">
-              🔥 Disponível a partir de 01/07/26 — um por pedido. Sem exceções.
-            </p>
-          </motion.div>
         </div>
       </section>
 
-      {/* Location */}
-      <section id="local" className="relative h-[80vh] w-full overflow-hidden flex items-center">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-black/80 z-10" />
-          <img src={atmosphereImg} alt="Ambiente NONAME03" className="w-full h-full object-cover object-center grayscale" />
-        </div>
-        <div className="relative z-20 max-w-7xl mx-auto px-6 w-full flex flex-col md:flex-row justify-between items-center gap-12">
+      {/* Contact / Footer */}
+      <section id="contato" className="bg-black border-t border-zinc-900 py-32 px-6">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 justify-between">
           <div className="flex-1">
-            <h2 className="text-5xl md:text-8xl font-bold uppercase tracking-tighter text-white mb-8">Onde</h2>
-            <div className="space-y-6 font-mono text-xl text-muted-foreground">
-              <div className="flex items-start gap-4">
-                <MapPin className="w-6 h-6 text-primary shrink-0 mt-1" />
-                <p>Rua Augusta, Beco 13<br />Porta preta, sem letreiro.<br />São Paulo, SP</p>
-              </div>
-              <div className="flex items-start gap-4">
-                <Clock className="w-6 h-6 text-primary shrink-0 mt-1" />
-                <p>Ter - Sab: 19h às 04h<br />Dom - Seg: Fechado</p>
-              </div>
-            </div>
-          </div>
-          <div className="flex-1 w-full flex justify-center md:justify-end">
-            <div className="bg-primary text-black p-10 max-w-md w-full transform rotate-2 hover:rotate-0 transition-transform duration-300">
-              <h3 className="text-3xl font-bold uppercase tracking-tighter mb-5">Avisos</h3>
-              <ul className="font-mono space-y-4 text-sm font-bold">
-                <li>- NÃO ACEITAMOS PIX. SÓ CARTÃO OU DINHEIRO VIVO.</li>
-                <li>- SEM RESERVAS. CHEGUE CEDO OU ESPERE NA RUA.</li>
-                <li>- SEM RECLAMAÇÕES.</li>
-                <li>- RASPADINHA: UMA POR PEDIDO.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-black py-12 px-6 border-t border-zinc-900">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="font-mono text-2xl font-bold uppercase tracking-tighter text-white">NONAME03 🍔🔥</div>
-          <p className="font-mono text-muted-foreground text-xs uppercase tracking-widest text-center">
-            Sem nome, sem padrão. Só sabor.
-          </p>
-          <div className="flex items-center gap-6">
-            <a href="#" data-testid="link-instagram" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 font-mono text-sm uppercase">
-              <Instagram className="w-5 h-5" />
-              <span>@noname03</span>
+            <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white mb-8">Pise no<br/>Tatame</h2>
+            <p className="font-mono text-zinc-400 mb-12 max-w-md leading-relaxed">
+              Pronto para começar? A primeira aula experimental é por nossa conta. Mande uma mensagem e agende seu horário.
+            </p>
+            
+            <a 
+              href="https://wa.me/5511999999999" 
+              target="_blank" 
+              rel="noreferrer"
+              className="inline-flex items-center gap-4 bg-[#25D366] text-white px-8 py-5 text-xl font-bold uppercase tracking-widest hover:bg-white hover:text-[#25D366] transition-colors"
+            >
+              <Phone className="w-6 h-6" />
+              Chamar no WhatsApp
             </a>
           </div>
+
+          <div className="flex-1 font-mono text-sm space-y-12">
+            <div>
+              <div className="flex items-center gap-3 text-primary mb-4 uppercase tracking-[0.2em] font-bold">
+                <MapPin className="w-5 h-5" />
+                <span>Onde Estamos</span>
+              </div>
+              <p className="text-zinc-300 text-lg">
+                Rua da Sangria, 123<br/>
+                Galpão Fundos<br/>
+                São Paulo - SP
+              </p>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-3 text-primary mb-4 uppercase tracking-[0.2em] font-bold">
+                <Clock className="w-5 h-5" />
+                <span>Horários</span>
+              </div>
+              <ul className="text-zinc-300 space-y-2">
+                <li>Segunda a Sexta: 06h às 22h</li>
+                <li>Sábados: 08h às 14h</li>
+                <li>Domingos: Descanso dos guerreiros</li>
+              </ul>
+            </div>
+
+            <div>
+               <div className="flex items-center gap-3 text-primary mb-4 uppercase tracking-[0.2em] font-bold">
+                <Instagram className="w-5 h-5" />
+                <span>Redes</span>
+              </div>
+              <a href="#" className="text-zinc-300 hover:text-white text-lg transition-colors">@marksthai.sp</a>
+            </div>
+          </div>
         </div>
+      </section>
+
+      <footer className="bg-black py-8 border-t border-zinc-900 text-center font-mono text-xs uppercase tracking-widest text-zinc-600">
+        <p>© 2026 MARKSTHAI GYM. TODOS OS DIREITOS RESERVADOS.</p>
       </footer>
     </div>
   );
+}
+
+// Mock Flame icon since it's not exported by default in some lucide versions
+function Flame(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+    </svg>
+  )
 }
