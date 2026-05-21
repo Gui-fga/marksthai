@@ -213,7 +213,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Videos */}
+      {/* Videos — Instagram Feed */}
       <section id="videos" className="py-32 px-6 bg-black border-t border-zinc-900">
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -221,63 +221,53 @@ export default function App() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="mb-16"
+            className="mb-6"
           >
-            <h2 className="text-primary font-mono uppercase tracking-[0.3em] font-bold mb-4">/ Vídeos</h2>
-            <h3 className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white">
-              Sinta o <span className="text-primary">Impacto</span>
-            </h3>
-          </motion.div>
-
-          {/* Featured video */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="mb-8"
-          >
-            <div className="relative w-full aspect-video bg-zinc-900 overflow-hidden border border-zinc-800 hover:border-primary transition-colors duration-300">
-              <iframe
-                src="https://www.youtube.com/embed/dXtIbBJRXAQ?rel=0&modestbranding=1"
-                title="Marksthai — Treino em Destaque"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="absolute inset-0 w-full h-full"
-              />
+            <h2 className="text-primary font-mono uppercase tracking-[0.3em] font-bold mb-4">/ Instagram</h2>
+            <div className="flex flex-col md:flex-row justify-between items-end gap-6">
+              <h3 className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white">
+                No <span className="text-primary">Ringue</span>
+              </h3>
+              <a
+                href="https://www.instagram.com/marksthai"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="link-instagram"
+                className="flex items-center gap-2 font-mono text-sm uppercase tracking-widest text-zinc-400 hover:text-primary transition-colors pb-2 shrink-0"
+              >
+                @marksthai →
+              </a>
             </div>
-            <p className="font-mono text-zinc-500 text-xs uppercase tracking-widest mt-3">
-              Em destaque — Treino coletivo Marksthai
-            </p>
           </motion.div>
 
-          {/* Video grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Instagram Reels grid — portrait 4:5 */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
             {[
-              { id: "FzJ_de8SVRY", label: "Técnica de Cotovelo — Kru Márcio" },
-              { id: "N_W1ZZFz1gg", label: "Sparring Avançado — Competição Interna" },
-              { id: "7yxt8R4YJxM", label: "Treino Kids — Turma da Tarde" },
-            ].map((video, i) => (
+              { postId: "C6example1AA", label: "Treino de Clinch" },
+              { postId: "C6example2BB", label: "Sparring Avançado" },
+              { postId: "C6example3CC", label: "Técnica de Joelho" },
+              { postId: "C6example4DD", label: "Kids na Academia" },
+            ].map((post, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.12 }}
-                data-testid={`video-card-${i}`}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="flex flex-col"
+                data-testid={`instagram-card-${i}`}
               >
-                <div className="relative w-full aspect-video bg-zinc-900 overflow-hidden border border-zinc-800 hover:border-primary transition-colors duration-300">
+                {/* Portrait aspect ratio for Instagram posts/Reels */}
+                <div className="relative w-full bg-zinc-900 border border-zinc-800 hover:border-primary transition-colors duration-300 overflow-hidden" style={{ paddingBottom: "125%" }}>
                   <iframe
-                    src={`https://www.youtube.com/embed/${video.id}?rel=0&modestbranding=1`}
-                    title={video.label}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    src={`https://www.instagram.com/reel/${post.postId}/embed/`}
+                    title={post.label}
                     allowFullScreen
-                    className="absolute inset-0 w-full h-full"
+                    scrolling="no"
+                    className="absolute inset-0 w-full h-full border-0"
+                    style={{ background: "#000" }}
                   />
                 </div>
-                <p className="font-mono text-zinc-500 text-xs uppercase tracking-widest mt-3">
-                  {video.label}
-                </p>
               </motion.div>
             ))}
           </div>
@@ -290,13 +280,13 @@ export default function App() {
             className="mt-12 text-center"
           >
             <a
-              href="https://www.youtube.com/@marksthai"
+              href="https://www.instagram.com/marksthai"
               target="_blank"
               rel="noopener noreferrer"
-              data-testid="link-youtube"
+              data-testid="link-instagram-all"
               className="inline-flex items-center gap-3 border border-zinc-700 text-white font-mono text-sm uppercase tracking-widest px-8 py-4 hover:border-primary hover:text-primary transition-colors duration-300"
             >
-              Ver todos os vídeos no YouTube
+              Ver todos no Instagram
             </a>
           </motion.div>
         </div>
