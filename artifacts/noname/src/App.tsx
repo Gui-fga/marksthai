@@ -37,6 +37,7 @@ export default function App() {
             <a href="#filosofia" className="hover:text-primary transition-colors">Filosofia</a>
             <a href="#modalidades" className="hover:text-primary transition-colors">Modalidades</a>
             <a href="#mestres" className="hover:text-primary transition-colors">Mestres</a>
+            <a href="#videos" className="hover:text-primary transition-colors">Vídeos</a>
             <a href="#planos" className="hover:text-primary transition-colors">Planos</a>
           </div>
           <a 
@@ -209,6 +210,95 @@ export default function App() {
               Respeito<br/>No<br/>Tatame
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* Videos */}
+      <section id="videos" className="py-32 px-6 bg-black border-t border-zinc-900">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="mb-16"
+          >
+            <h2 className="text-primary font-mono uppercase tracking-[0.3em] font-bold mb-4">/ Vídeos</h2>
+            <h3 className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white">
+              Sinta o <span className="text-primary">Impacto</span>
+            </h3>
+          </motion.div>
+
+          {/* Featured video */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="mb-8"
+          >
+            <div className="relative w-full aspect-video bg-zinc-900 overflow-hidden border border-zinc-800 hover:border-primary transition-colors duration-300">
+              <iframe
+                src="https://www.youtube.com/embed/dXtIbBJRXAQ?rel=0&modestbranding=1"
+                title="Marksthai — Treino em Destaque"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+              />
+            </div>
+            <p className="font-mono text-zinc-500 text-xs uppercase tracking-widest mt-3">
+              Em destaque — Treino coletivo Marksthai
+            </p>
+          </motion.div>
+
+          {/* Video grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { id: "FzJ_de8SVRY", label: "Técnica de Cotovelo — Kru Márcio" },
+              { id: "N_W1ZZFz1gg", label: "Sparring Avançado — Competição Interna" },
+              { id: "7yxt8R4YJxM", label: "Treino Kids — Turma da Tarde" },
+            ].map((video, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.12 }}
+                data-testid={`video-card-${i}`}
+              >
+                <div className="relative w-full aspect-video bg-zinc-900 overflow-hidden border border-zinc-800 hover:border-primary transition-colors duration-300">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${video.id}?rel=0&modestbranding=1`}
+                    title={video.label}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full"
+                  />
+                </div>
+                <p className="font-mono text-zinc-500 text-xs uppercase tracking-widest mt-3">
+                  {video.label}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="mt-12 text-center"
+          >
+            <a
+              href="https://www.youtube.com/@marksthai"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="link-youtube"
+              className="inline-flex items-center gap-3 border border-zinc-700 text-white font-mono text-sm uppercase tracking-widest px-8 py-4 hover:border-primary hover:text-primary transition-colors duration-300"
+            >
+              Ver todos os vídeos no YouTube
+            </a>
+          </motion.div>
         </div>
       </section>
 
