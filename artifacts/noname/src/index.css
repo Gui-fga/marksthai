@@ -57,7 +57,7 @@
 
   --border: 0 0% 12%;
   --input: 0 0% 12%;
-  --ring: 356 65% 46%; /* Blood Red */
+  --ring: 42 80% 50%; /* Gold */
 
   --card: 0 0% 4%;
   --card-foreground: 0 0% 100%;
@@ -67,8 +67,8 @@
   --popover-foreground: 0 0% 100%;
   --popover-border: 0 0% 12%;
 
-  --primary: 356 65% 46%; /* Blood Red #C0272D */
-  --primary-foreground: 0 0% 100%;
+  --primary: 42 80% 50%; /* Gold #D4A012 */
+  --primary-foreground: 0 0% 0%;
 
   --secondary: 0 0% 10%;
   --secondary-foreground: 0 0% 100%;
@@ -76,7 +76,7 @@
   --muted: 0 0% 10%;
   --muted-foreground: 0 0% 60%;
 
-  --accent: 356 65% 46%;
+  --accent: 42 80% 50%;
   --accent-foreground: 0 0% 100%;
 
   --destructive: 0 84% 60%;
@@ -93,7 +93,7 @@
 
   --border: 0 0% 12%;
   --input: 0 0% 12%;
-  --ring: 356 65% 46%;
+  --ring: 42 80% 50%;
 
   --card: 0 0% 4%;
   --card-foreground: 0 0% 100%;
@@ -103,8 +103,8 @@
   --popover-foreground: 0 0% 100%;
   --popover-border: 0 0% 12%;
 
-  --primary: 356 65% 46%;
-  --primary-foreground: 0 0% 100%;
+  --primary: 42 80% 50%;
+  --primary-foreground: 0 0% 0%;
 
   --secondary: 0 0% 10%;
   --secondary-foreground: 0 0% 100%;
@@ -112,7 +112,7 @@
   --muted: 0 0% 10%;
   --muted-foreground: 0 0% 60%;
 
-  --accent: 356 65% 46%;
+  --accent: 42 80% 50%;
   --accent-foreground: 0 0% 100%;
 
   --destructive: 0 84% 60%;
