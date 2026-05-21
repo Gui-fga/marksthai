@@ -1,0 +1,50 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "Qw9u7OLA-f0GTktluw7mG"
+uri = "file://artifacts/noname/src/assets/images/hero.png"
+type = "image"
+title = "Moody hero burger shot"
+
+[[generated]]
+id = "CTk_9b0RzuYshLP-VBdcM"
+uri = "file://artifacts/noname/src/assets/images/burger-1.png"
+type = "image"
+title = "Classic smash burger"
+
+[[generated]]
+id = "uDak40xu3eaVoKnLfy9LK"
+uri = "file://artifacts/noname/src/assets/images/burger-2.png"
+type = "image"
+title = "Double bacon smash"
+
+[[generated]]
+id = "h7AcLA4X0QKRhNeGRcKo9"
+uri = "file://artifacts/noname/src/assets/images/burger-3.png"
+type = "image"
+title = "Spicy jalapeño burger"
+
+[[generated]]
+id = "XG6vRKPjzOkoA1n7bbeop"
+uri = "file://artifacts/noname/src/assets/images/burger-4.png"
+type = "image"
+title = "Truffle mushroom burger"
+
+[[generated]]
+id = "XqC9C0JUGHZ89NX9gJDut"
+uri = "file://artifacts/noname/src/assets/images/burger-5.png"
+type = "image"
+title = "Massive noname special"
+
+[[generated]]
+id = "96CHAU5jiaQZwywO-4SXC"
+uri = "file://artifacts/noname/src/assets/images/burger-6.png"
+type = "image"
+title = "Simple cheese burger"
+
+[[generated]]
+id = "LAf8yVkvT26NY6-EnZQlA"
+uri = "file://artifacts/noname/src/assets/images/atmosphere.png"
+type = "image"
+title = "Dark alley restaurant exterior"
