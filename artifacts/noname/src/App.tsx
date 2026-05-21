@@ -31,7 +31,7 @@ export default function App() {
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isNavScrolled ? 'bg-black/90 backdrop-blur-sm py-4' : 'bg-transparent py-6'}`}>
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <div className="text-3xl font-black uppercase tracking-tighter text-white">
-            MARKS<span className="text-primary">THAI</span>
+            MARCKS<span className="text-[#af6e02]">THAI</span>
           </div>
           <div className="hidden md:flex gap-8 font-mono text-sm uppercase tracking-widest font-bold">
             <a href="#filosofia" className="hover:text-primary transition-colors">Filosofia</a>
@@ -68,7 +68,7 @@ export default function App() {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <h1 className="text-[15vw] leading-[0.8] font-black uppercase tracking-tighter text-white drop-shadow-2xl">
-              MARKS<span className="text-primary">THAI</span>
+              MARCKS<span className="text-[#af6e02]">THAI</span>
             </h1>
           </motion.div>
           
@@ -117,7 +117,7 @@ export default function App() {
                 O ringue não mente. Aqui você não vem para malhar, vem para forjar seu corpo e sua mente.
               </p>
               <p>
-                O SUOR É O PAGAMENTO. <span className="text-primary">O RESPEITO É A RECOMPENSA.</span>
+                O SUOR É O PAGAMENTO. <span className="text-[#af6e02]">O RESPEITO É A RECOMPENSA.</span>
               </p>
             </div>
           </motion.div>
@@ -129,7 +129,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto">
           <div className="mb-20">
             <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white">
-              Treina<span className="text-primary">mento</span>
+              Treina<span className="text-[#af6e02]">mento</span>
             </h2>
           </div>
 
@@ -226,16 +226,16 @@ export default function App() {
             <h2 className="text-primary font-mono uppercase tracking-[0.3em] font-bold mb-4">/ Instagram</h2>
             <div className="flex flex-col md:flex-row justify-between items-end gap-6">
               <h3 className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white">
-                No <span className="text-primary">Ringue</span>
+                No <span className="text-[#af6e02]">Ringue</span>
               </h3>
               <a
-                href="https://www.instagram.com/marksthai"
+                href="https://www.instagram.com/marcksthai/"
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="link-instagram"
                 className="flex items-center gap-2 font-mono text-sm uppercase tracking-widest text-zinc-400 hover:text-primary transition-colors pb-2 shrink-0"
               >
-                @marksthai →
+                @marcksthai/ →
               </a>
             </div>
           </motion.div>
@@ -243,10 +243,10 @@ export default function App() {
           {/* Instagram Reels grid — portrait 4:5 */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
             {[
-              { postId: "C6example1AA", label: "Treino de Clinch" },
-              { postId: "C6example2BB", label: "Sparring Avançado" },
-              { postId: "C6example3CC", label: "Técnica de Joelho" },
-              { postId: "C6example4DD", label: "Kids na Academia" },
+              { postId: "DTpr59kDkw3", label: "Kids na Academia" },
+              { postId: "Cy9NnVVOhz3", label: "Sparring Avançado" },
+              { postId: "DXrBAfUuFIk", label: "Técnica de Joelho" },
+              { postId: "C3nxgSFODPU", label: "Treino de Clinch" },
             ].map((post, i) => (
               <motion.div
                 key={i}
@@ -263,6 +263,7 @@ export default function App() {
                     src={`https://www.instagram.com/reel/${post.postId}/embed/`}
                     title={post.label}
                     allowFullScreen
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"
                     scrolling="no"
                     className="absolute inset-0 w-full h-full border-0"
                     style={{ background: "#000" }}
@@ -280,7 +281,7 @@ export default function App() {
             className="mt-12 text-center"
           >
             <a
-              href="https://www.instagram.com/marksthai"
+              href="https://www.instagram.com/marcksthai/"
               target="_blank"
               rel="noopener noreferrer"
               data-testid="link-instagram-all"
@@ -353,7 +354,7 @@ export default function App() {
             </p>
             
             <a 
-              href="https://wa.me/5511999999999" 
+              href="https://l.instagram.com/?u=https%3A%2F%2Fapi.whatsapp.com%2Fsend%3Fphone%3D61982320343%26utm_source%3Dig%26utm_medium%3Dsocial%26utm_content%3Dlink_in_bio%26fbclid%3DPAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPOTM2NjE5NzQzMzkyNDU5AAGnNzfjTsER2wIr6z7PmYPt3Xb_iOX_dqTcNTC3Np-gtZHPcNvF82uDdwoegUs_aem_ufl5I4fPO8xEdaPa3Qhx0A&e=AUC0JY84ln8zWttj2HHQDPWD-g2AAwIGeIZyUSICDTpgHZJDn2yh-yy1a4ZPNLIlpdPhGF5UfCoWNNhmRW-QrfbqcKOeV0mqBdX2exTLzK_Gc1JuCwS7pxCG4Nyx2Cc" 
               target="_blank" 
               rel="noreferrer"
               className="inline-flex items-center gap-4 bg-[#25D366] text-white px-8 py-5 text-xl font-bold uppercase tracking-widest hover:bg-white hover:text-[#25D366] transition-colors"
@@ -393,14 +394,14 @@ export default function App() {
                 <Instagram className="w-5 h-5" />
                 <span>Redes</span>
               </div>
-              <a href="#" className="text-zinc-300 hover:text-white text-lg transition-colors">@marksthai.sp</a>
+              <a href="#" className="text-zinc-300 hover:text-white text-lg transition-colors">@marcksthai/</a>
             </div>
           </div>
         </div>
       </section>
 
       <footer className="bg-black py-8 border-t border-zinc-900 text-center font-mono text-xs uppercase tracking-widest text-zinc-600">
-        <p>© 2026 MARKSTHAI GYM. TODOS OS DIREITOS RESERVADOS.</p>
+        <p>© 2026 marcksthai/ GYM. TODOS OS DIREITOS RESERVADOS.</p>
       </footer>
     </div>
   );
